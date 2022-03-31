@@ -63,49 +63,31 @@
 
 //   app.listen(port, () => console.log(`Server running on port ${port}`));
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-require("dotenv").config();
+// app.js
 
-const cors = require("cors");
+const express = require('express');
+const connectDB = require('./config/db');
+var cors = require('cors');
+
+// routes
+const books = require('./routes/api/books');
 
 const app = express();
-app.use(cors());
 
-//import your models
-require("./models/Book.js");
+// Connect Database
+connectDB();
 
-mongoose
- .connect(
- process.env.MONGODB_CONNECTION_STRING,
- {
-     useNewUrlParser: true,
-     useUnifiedTopology: true,
-     }
-     )
-     .then(() => console.log("MongoDB has been connected"))
-     .catch((err) => console.log(err));
+// cors
+app.use(cors({ origin: true, credentials: true }));
 
-//middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// Init Middleware
+app.use(express.json({ extended: false }));
 
-//import routes
-require("./routes/api/books.js")(app);
+app.get('/', (req, res) => res.send('Hello world!'));
 
-const PORT = process.env.PORT || 8082;
+// use Routes
+app.use('/api/books', books);
 
-// Accessing the path module
-const path = require("path");
+const port = process.env.PORT || 8082;
 
-// Step 1:
-app.use(express.static(path.resolve(__dirname, "./mern-app/build")));
-// Step 2:
-app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "./mern-app/build", "index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`);
-});
+app.listen(port, () => console.log(`Server running on port ${port}`));
