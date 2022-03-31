@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "concurrently --kill-others-on-fail \"npm run app\" \"npm run start --prefix mern-app\"",
     "app": "nodemon app.js",
+    "develop": "concurrently --kill-others-on-fail \"npm run app\" \"npm run start --prefix mern-app\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd mern-app && npm run build",
     "install-client": "cd mern-app && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build"
+    "heroku-postbuild": "npm run install-mern-app && npm run build"
   },
   "repository": {
     "type": "git",
