@@ -77,15 +77,15 @@ app.use(cors());
 require("./models/Book.js");
 
 mongoose
-  .connect(
-    process.env.MONGODB_CONNECTION_STRING,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("MongoDB has been connected"))
-  .catch((err) => console.log(err));
+ .connect(
+ process.env.MONGODB_CONNECTION_STRING,
+ {
+     useNewUrlParser: true,
+     useUnifiedTopology: true,
+     }
+     )
+     .then(() => console.log("MongoDB has been connected"))
+     .catch((err) => console.log(err));
 
 //middleware
 app.use(bodyParser.urlencoded({ extended: true }));
